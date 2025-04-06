@@ -52,9 +52,9 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for location := range directory.locations {
-		
-	}
+	// for location := range directory.Locations {
+	//
+	// }
 
 	http.Handle("/directory", directory)
 
