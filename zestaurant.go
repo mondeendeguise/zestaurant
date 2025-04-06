@@ -3,7 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"html"
+	// "html"
 	"log"
 	"net/http"
 	"os"
@@ -35,8 +35,30 @@ type MenuItem struct {
 
 const DB = "db.json"
 
-func (d Directory) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
+func (directory Directory) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	b, err := json.MarshalIndent(directory, "", "\t")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(w, string(b))
+}
+
+func (location Location) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (menu Menu) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func (menuItem MenuItem) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	b, err := json.Marshal(menuItem)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Fprintf(w, "%q", b)
 }
 
 func main() {
@@ -52,10 +74,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// for location := range directory.Locations {
-	//
-	// }
-
+	http.Handle("/", directory)
 	http.Handle("/directory", directory)
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
