@@ -1,0 +1,96 @@
+{
+    "locations": [
+        {
+            "name": "Provo",
+            "menu": {
+                "appetizers": [
+                    {
+                        "name": "Garlic Bread",
+                        "price": 5.99,
+                        "description": "Garlicky Bread",
+                        "inStock": true
+                    }
+                ],
+
+                "soup": [
+                    {
+                        "name": "Ranch Dressing",
+                        "price": 21.95,
+                        "description": "fresh homemade ranch dressing straight from the tap",
+                        "inStock": false
+                    }
+                ],
+
+                "entrees": [
+                    {
+                        "name": "Smoked Ribeye",
+                        "price": 19.99,
+                        "description": "Smoked Ribeye",
+                        "inStock": true
+                    }
+                ],
+
+                "desserts": [
+                    {
+                        "name": "Fish au Chocolat",
+                        "price": 12.49,
+                        "description": "Fresh cod basted in Mama Liz's Chili Oil, covered in chocolate",
+                        "inStock": false
+                    }
+                ],
+
+                "beverages": [
+                    "Pepis"
+                ]
+            }
+        },
+
+        {
+            "name": "Millcreek",
+            "menu": {
+                "appetizers": [
+
+                ],
+
+                "soup": [
+                    {
+                        "name": "Piscine le Pool",
+                        "price": 12.99,
+                        "description": "everyone does it",
+                        "inStock": false
+                    }
+                ],
+
+                "entrees": [
+
+                ],
+
+                "beverages": [ 
+
+                ]
+            }
+        },
+
+        {
+            "name": "Holladay",
+            "menu": {
+                "appetizers": [
+
+                ],
+
+                "soup": [
+
+                ],
+
+                "entrees": [
+
+                ],
+
+                "beverages": [
+                    "Root Beer",
+                    "Coke"
+                ]
+            }
+        }
+    ]
+}
