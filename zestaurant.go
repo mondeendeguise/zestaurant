@@ -94,5 +94,28 @@ func main() {
 		fmt.Fprintf(w, string(b))
 	})
 
+	http.HandleFunc("/locations/{location}/menu", func(w http.ResponseWriter, r *http.Request) {
+		location := r.PathValue("location")
+
+		locationIndex := -1
+		for i, v := range directory.Locations {
+			if strings.EqualFold(v.Name, location) {
+				locationIndex = i
+			}
+		}
+
+		if locationIndex == -1 {
+			fmt.Fprintf(w, "not found")
+			return
+		}
+
+		b, err := json.MarshalIndent(directory.Locations[locationIndex].Menu, "", "\t")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, string(b))
+	})
+
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
