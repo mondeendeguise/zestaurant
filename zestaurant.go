@@ -3,28 +3,31 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	// "html"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
 
 type Directory struct {
-	Locations []Location
+	Locations Locations
 }
 
 type Location struct {
 	Name string
 	Menu Menu
 }
+type Locations []Location
 
 type Menu struct {
-	Appetizers []MenuItem
-	Soup []MenuItem
-	Entrees []MenuItem
-	Desserts []MenuItem
-	Beverages []string
+	Appetizers MenuItems
+	Soup MenuItems
+	Entrees MenuItems
+	Desserts MenuItems
+	Beverages Strings
 }
+
+type Strings []string
 
 type MenuItem struct {
 	Name string
@@ -32,34 +35,9 @@ type MenuItem struct {
 	Description string
 	InStock bool
 }
+type MenuItems []MenuItem
 
 const DB = "db.json"
-
-func (directory Directory) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	b, err := json.MarshalIndent(directory, "", "\t")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Fprintf(w, string(b))
-}
-
-func (location Location) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (menu Menu) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-
-}
-
-func (menuItem MenuItem) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	b, err := json.Marshal(menuItem)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Fprintf(w, "%q", b)
-}
 
 func main() {
 	data, err := os.ReadFile("db.json")
@@ -74,8 +52,47 @@ func main() {
 		log.Fatal(err)
 	}
 
-	http.Handle("/", directory)
-	http.Handle("/directory", directory)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.MarshalIndent(directory, "", "\t")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, string(b))
+	})
+
+	// TODO: handle requests to paths with trailing `/`
+	http.HandleFunc("/locations", func(w http.ResponseWriter, r *http.Request) {
+		b, err := json.MarshalIndent(directory.Locations, "", "\t")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, string(b))
+	})
+
+	http.HandleFunc("/locations/{location}", func(w http.ResponseWriter, r *http.Request) {
+		location := r.PathValue("location")
+
+		locationIndex := -1
+		for i, v := range directory.Locations {
+			if strings.EqualFold(v.Name, location) {
+				locationIndex = i
+			}
+		}
+
+		if locationIndex == -1 {
+			fmt.Fprintf(w, "not found")
+			return
+		}
+
+		b, err := json.MarshalIndent(directory.Locations[locationIndex], "", "\t")
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, string(b))
+	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
