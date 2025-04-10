@@ -9,25 +9,26 @@ import (
 	"strings"
 )
 
+// TODO: simulate external API/DB
+//       `db.json` is read into memory once at startup
+//       make a `fetch` abstraction for requesting arbitrary data methinks
+const DB = "db.json"
+
 type Directory struct {
 	Locations Locations
 }
 
 type Location struct {
 	Name string
-	Menu Menu
+	Menu SubMenus
 }
 type Locations []Location
 
-type Menu struct {
-	Appetizers MenuItems
-	Soup MenuItems
-	Entrees MenuItems
-	Desserts MenuItems
-	Beverages Strings
+type SubMenu struct {
+	Name string
+	Items MenuItems
 }
-
-type Strings []string
+type SubMenus []SubMenu
 
 type MenuItem struct {
 	Name string
@@ -37,9 +38,10 @@ type MenuItem struct {
 }
 type MenuItems []MenuItem
 
-const DB = "db.json"
-
 func main() {
+	log.SetOutput(os.Stdout)
+	log.SetFlags(log.Llongfile)
+
 	data, err := os.ReadFile("db.json")
 	if err != nil {
 		log.Fatal(err)
@@ -52,8 +54,9 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// TODO: handle POST, PUT, PATCH, DELETE
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		b, err := json.MarshalIndent(directory, "", "\t")
+		b, err := json.Marshal(directory)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -62,8 +65,9 @@ func main() {
 	})
 
 	// TODO: handle requests to paths with trailing `/`
+	// TODO: make paths case insensitive
 	http.HandleFunc("/locations", func(w http.ResponseWriter, r *http.Request) {
-		b, err := json.MarshalIndent(directory.Locations, "", "\t")
+		b, err := json.Marshal(directory.Locations)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -72,21 +76,22 @@ func main() {
 	})
 
 	http.HandleFunc("/locations/{location}", func(w http.ResponseWriter, r *http.Request) {
-		location := r.PathValue("location")
 
+		locationName := r.PathValue("location")
 		locationIndex := -1
 		for i, v := range directory.Locations {
-			if strings.EqualFold(v.Name, location) {
+			if strings.EqualFold(v.Name, locationName) {
 				locationIndex = i
+				break
 			}
 		}
 
 		if locationIndex == -1 {
-			fmt.Fprintf(w, "not found")
+			http.Error(w, "not found", 404)
 			return
 		}
 
-		b, err := json.MarshalIndent(directory.Locations[locationIndex], "", "\t")
+		b, err := json.Marshal(directory.Locations[locationIndex])
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -95,21 +100,58 @@ func main() {
 	})
 
 	http.HandleFunc("/locations/{location}/menu", func(w http.ResponseWriter, r *http.Request) {
-		location := r.PathValue("location")
-
+		locationName := r.PathValue("location")
 		locationIndex := -1
 		for i, v := range directory.Locations {
-			if strings.EqualFold(v.Name, location) {
+			if strings.EqualFold(v.Name, locationName) {
 				locationIndex = i
+				break
 			}
 		}
 
 		if locationIndex == -1 {
-			fmt.Fprintf(w, "not found")
+			http.Error(w, "not found", 404)
 			return
 		}
 
-		b, err := json.MarshalIndent(directory.Locations[locationIndex].Menu, "", "\t")
+		b, err := json.Marshal(directory.Locations[locationIndex].Menu)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Fprintf(w, string(b))
+	})
+
+	http.HandleFunc("/locations/{location}/menu/{subMenu}", func(w http.ResponseWriter, r *http.Request) {
+		locationName := r.PathValue("location")
+		locationIndex := -1
+		for i, v := range directory.Locations {
+			if strings.EqualFold(v.Name, locationName) {
+				locationIndex = i
+				break
+			}
+		}
+
+		if locationIndex == -1 {
+			http.Error(w, "not found", 404)
+			return
+		}
+
+		subMenuName := r.PathValue("subMenu")
+		subMenuIndex := -1
+		for i, v := range directory.Locations[locationIndex].Menu {
+			if strings.EqualFold(v.Name, subMenuName) {
+				subMenuIndex = i
+				break
+			}
+		}
+
+		if subMenuIndex == -1 {
+			http.Error(w, "not found", 404)
+			return
+		}
+
+		b, err := json.Marshal(directory.Locations[locationIndex].Menu[subMenuIndex])
 		if err != nil {
 			log.Fatal(err)
 		}

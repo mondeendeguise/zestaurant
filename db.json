@@ -2,103 +2,145 @@
     "locations": [
         {
             "name": "Provo",
-            "menu": {
-                "appetizers": [
-                    {
-                        "name": "Garlic Bread",
-                        "price": 5.99,
-                        "description": "Garlicky Bread",
-                        "inStock": true
-                    }
-                ],
+            "menu": [
+                {
+                    "name": "appetizers",
+                    "items": [
+                        {
+                            "name": "Garlic Bread",
+                            "price": 5.99,
+                            "description": "Garlicky Bread",
+                            "in_stock": true
+                        }
+                    ]
+                },
 
-                "soup": [
-                    {
-                        "name": "Ranch Dressing",
-                        "price": 21.95,
-                        "description": "fresh homemade ranch dressing straight from the tap",
-                        "inStock": false
-                    }
-                ],
+                {
+                    "name": "soup",
+                    "items": [
+                        {
+                            "name": "Ranch Dressing",
+                            "price": 21.95,
+                            "description": "fresh homemade ranch dressing straight from the tap",
+                            "in_stock": false
+                        }
+                    ]
+                },
 
-                "entrees": [
-                    {
-                        "name": "Smoked Ribeye",
-                        "price": 19.99,
-                        "description": "Smoked Ribeye",
-                        "inStock": true
-                    }
-                ],
+                {
+                    "name": "entrees",
+                    "items": [
+                        {
+                            "name": "Smoked Ribeye",
+                            "price": 19.99,
+                            "description": "Smoked Ribeye",
+                            "in_stock": true
+                        }
+                    ]
+                },
 
-                "desserts": [
-                    {
-                        "name": "Fish au Chocolat",
-                        "price": 12.49,
-                        "description": "Fresh cod basted in Mama Liz's Chili Oil, covered in chocolate",
-                        "inStock": false
-                    }
-                ],
+                {
+                    "name": "desserts",
+                    "items": [
+                        {
+                            "name": "Fish au Chocolat",
+                            "price": 12.49,
+                            "description": "Fresh cod basted in Mama Liz's Chili Oil, covered in chocolate",
+                            "in_stock": false
+                        }
+                    ]
+                }
+            ]
 
-                "beverages": [
-                    "Pepis"
-                ]
-            }
         },
 
         {
             "name": "Millcreek",
-            "menu": {
-                "appetizers": [
+            "menu": [
+                {
+                    "name": "appetizers",
+                    "items": [
 
-                ],
+                    ]
+                },
 
-                "soup": [
-                    {
-                        "name": "Piscine le Pool",
-                        "price": 12.99,
-                        "description": "everyone does it",
-                        "inStock": false
-                    }
-                ],
+                {
+                    "name": "soup",
+                    "items": [
+                        {
+                            "name": "Piscine le Pool",
+                            "price": 12.99,
+                            "description": "everyone does it",
+                            "in_stock": false
+                        }
+                    ]
+                },
 
-                "entrees": [
+                {
+                    "name": "entrees",
+                    "items": [
 
-                ],
+                    ]
+                },
 
-                "desserts": [
+                {
+                    "name": "desserts",
+                    "items": [
 
-                ],
+                    ]
+                },
 
-                "beverages": [ 
+                {
+                    "name": "beverages",
+                    "items": [
 
-                ]
-            }
+                    ]
+                }
+            ]
         },
 
         {
             "name": "Holladay",
-            "menu": {
-                "appetizers": [
+            "menu": [
+                {
+                    "name": "appetizers",
+                    "items": []
+                },
 
-                ],
+                {
+                    "name": "soup",
+                    "items": []
+                },
 
-                "soup": [
+                {
+                    "name": "entrees",
+                    "items": []
+                },
 
-                ],
+                {
+                    "name": "desserts",
+                    "items": []
+                },
 
-                "entrees": [
+                {
+                    "name": "beverages",
+                    "items": [
+                        {
+                            "name": "Root Beer",
+                            "price": 4.99,
+                            "description": "",
+                            "in_stock": true
+                        },
 
-                ],
-
-                "desserts": [
-
-                ],
-
-                "beverages": [
-                    "Root Beer",
-                    "Coke"
-                ]
-            }
+                        {
+                            "name": "Coca-Cola",
+                            "price": 4.99,
+                            "description": "",
+                            "in_stock": true
+                        }
+                    ]
+                }
+            ]
         }
     ]
 }
