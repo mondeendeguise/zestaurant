@@ -15,26 +15,26 @@ import (
 const DB = "db.json"
 
 type Directory struct {
-	Locations Locations
+	Locations Locations `json:"locations"`
 }
 
 type Location struct {
-	Name string
-	Menu SubMenus
+	Name string `json:"name"`
+	Menu SubMenus `json:"menu"`
 }
 type Locations []Location
 
 type SubMenu struct {
-	Name string
-	Items MenuItems
+	Name string `json:"name"`
+	Items MenuItems `json:"items"`
 }
 type SubMenus []SubMenu
 
 type MenuItem struct {
-	Name string
-	Price float64
-	Description string
-	InStock bool
+	Name string `json:"name"`
+	Price float64 `json:"price"`
+	Description string `json:"description"`
+	InStock bool `json:"in_stock"`
 }
 type MenuItems []MenuItem
 
