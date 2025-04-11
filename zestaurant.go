@@ -7,6 +7,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/Rican7/conjson"
+	"github.com/Rican7/conjson/transform"
 )
 
 // TODO: simulate external API/DB
@@ -15,26 +18,26 @@ import (
 const DB = "db.json"
 
 type Directory struct {
-	Locations Locations `json:"locations"`
+	Locations Locations
 }
 
 type Location struct {
-	Name string `json:"name"`
-	Menu SubMenus `json:"menu"`
+	Name string
+	Menu SubMenus
 }
 type Locations []Location
 
 type SubMenu struct {
-	Name string `json:"name"`
-	Items MenuItems `json:"items"`
+	Name string
+	Items MenuItems
 }
 type SubMenus []SubMenu
 
 type MenuItem struct {
-	Name string `json:"name"`
-	Price float64 `json:"price"`
-	Description string `json:"description"`
-	InStock bool `json:"in_stock"`
+	Name string
+	Price float64
+	Description string
+	InStock bool
 }
 type MenuItems []MenuItem
 
@@ -49,14 +52,16 @@ func main() {
 
 	directory := Directory{}
 
-	err = json.Unmarshal(data, &directory)
+	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
+	err = json.Unmarshal(data, unmarshaler)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// TODO: handle POST, PUT, PATCH, DELETE
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		b, err := json.Marshal(directory)
+		marshaler := conjson.NewMarshaler(directory, transform.ConventionalKeys())
+		b, err := json.Marshal(marshaler)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -67,7 +72,8 @@ func main() {
 	// TODO: handle requests to paths with trailing `/`
 	// TODO: make paths case insensitive
 	http.HandleFunc("/locations", func(w http.ResponseWriter, r *http.Request) {
-		b, err := json.Marshal(directory.Locations)
+		marshaler := conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
+		b, err := json.Marshal(marshaler)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -91,7 +97,8 @@ func main() {
 			return
 		}
 
-		b, err := json.Marshal(directory.Locations[locationIndex])
+		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex], transform.ConventionalKeys())
+		b, err := json.Marshal(marshaler)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -114,7 +121,8 @@ func main() {
 			return
 		}
 
-		b, err := json.Marshal(directory.Locations[locationIndex].Menu)
+		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu, transform.ConventionalKeys())
+		b, err := json.Marshal(marshaler)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -151,7 +159,8 @@ func main() {
 			return
 		}
 
-		b, err := json.Marshal(directory.Locations[locationIndex].Menu[subMenuIndex])
+		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[subMenuIndex], transform.ConventionalKeys())
+		b, err := json.Marshal(marshaler)
 		if err != nil {
 			log.Fatal(err)
 		}
