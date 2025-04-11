@@ -12,11 +12,6 @@ import (
 	"github.com/Rican7/conjson/transform"
 )
 
-// TODO: simulate external API/DB
-//       `db.json` is read into memory once at startup
-//       make a `fetch` abstraction for requesting arbitrary data methinks
-const DB = "db.json"
-
 type Directory struct {
 	Locations Locations
 }
@@ -41,25 +36,47 @@ type MenuItem struct {
 }
 type MenuItems []MenuItem
 
-func main() {
-	log.SetOutput(os.Stdout)
-	log.SetFlags(log.Llongfile)
-
-	data, err := os.ReadFile("db.json")
+// TODO: simulate external API/DB
+//       `db.json` is read into memory once at startup
+//       make a `fetch` abstraction for requesting arbitrary data methinks
+func ReadMockDB(file string) Directory {
+	data, err := os.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	directory := Directory{}
-
 	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
 	err = json.Unmarshal(data, unmarshaler)
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	return directory
+}
+
+const DB = "db.json"
+
+func main() {
+	log.SetOutput(os.Stderr)
+	log.SetFlags(log.Llongfile)
+
+//	data, err := os.ReadFile(DB)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+
+//	directory := Directory{}
+
+//	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
+//	err = json.Unmarshal(data, unmarshaler)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+
 	// TODO: handle POST, PUT, PATCH, DELETE
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		directory := ReadMockDB(DB)
 		marshaler := conjson.NewMarshaler(directory, transform.ConventionalKeys())
 		b, err := json.Marshal(marshaler)
 		if err != nil {
@@ -72,6 +89,7 @@ func main() {
 	// TODO: handle requests to paths with trailing `/`
 	// TODO: make paths case insensitive
 	http.HandleFunc("/locations", func(w http.ResponseWriter, r *http.Request) {
+		directory := ReadMockDB(DB)
 		marshaler := conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
 		b, err := json.Marshal(marshaler)
 		if err != nil {
@@ -82,6 +100,7 @@ func main() {
 	})
 
 	http.HandleFunc("/locations/{location}", func(w http.ResponseWriter, r *http.Request) {
+		directory := ReadMockDB(DB)
 
 		locationName := r.PathValue("location")
 		locationIndex := -1
@@ -107,6 +126,7 @@ func main() {
 	})
 
 	http.HandleFunc("/locations/{location}/menu", func(w http.ResponseWriter, r *http.Request) {
+		directory := ReadMockDB(DB)
 		locationName := r.PathValue("location")
 		locationIndex := -1
 		for i, v := range directory.Locations {
@@ -131,6 +151,7 @@ func main() {
 	})
 
 	http.HandleFunc("/locations/{location}/menu/{subMenu}", func(w http.ResponseWriter, r *http.Request) {
+		directory := ReadMockDB(DB)
 		locationName := r.PathValue("location")
 		locationIndex := -1
 		for i, v := range directory.Locations {
