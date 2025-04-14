@@ -202,7 +202,7 @@ func main() {
 		}
 	})
 
-	http.HandleFunc("/locations/{location}/menu/{subMenu}/", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/locations/{location}/menu/{menuGroup}/", func(w http.ResponseWriter, r *http.Request) {
 		switch(strings.ToUpper(r.Method)) {
 		case "": fallthrough
 		case "GET":
@@ -221,21 +221,21 @@ func main() {
 				return
 			}
 
-			subMenuName := r.PathValue("subMenu")
-			subMenuIndex := -1
+			menuGroupName := r.PathValue("menuGroup")
+			menuGroupIndex := -1
 			for i, v := range directory.Locations[locationIndex].Menu {
-				if strings.EqualFold(v.Name, subMenuName) {
-					subMenuIndex = i
+				if strings.EqualFold(v.Name, menuGroupName) {
+					menuGroupIndex = i
 					break
 				}
 			}
 
-			if subMenuIndex == -1 {
+			if menuGroupIndex == -1 {
 				http.Error(w, "404 Not Found", 404)
 				return
 			}
 
-			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[subMenuIndex], transform.ConventionalKeys())
+			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[menuGroupIndex], transform.ConventionalKeys())
 			b, err := json.Marshal(marshaler)
 			if err != nil {
 				log.Fatal(err)

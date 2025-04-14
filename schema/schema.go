@@ -8,15 +8,16 @@ type MenuItem struct {
 }
 type MenuItems []MenuItem
 
-type SubMenu struct {
+type MenuGroup struct {
 	Name string
 	Items MenuItems
+	SubGroups MenuGroups
 }
-type SubMenus []SubMenu
+type MenuGroups []MenuGroup
 
 type Location struct {
 	Name string
-	Menu SubMenus
+	Menu MenuGroups
 }
 type Locations []Location
 
