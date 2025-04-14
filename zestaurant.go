@@ -8,6 +8,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/joho/godotenv"
+
 	"github.com/Rican7/conjson"
 	"github.com/Rican7/conjson/transform"
 )
@@ -37,8 +39,6 @@ type MenuItem struct {
 type MenuItems []MenuItem
 
 // TODO: simulate external API/DB
-//       `db.json` is read into memory once at startup
-//       make a `fetch` abstraction for requesting arbitrary data methinks
 func ReadMockDB(file string) Directory {
 	data, err := os.ReadFile(file)
 	if err != nil {
@@ -55,138 +55,236 @@ func ReadMockDB(file string) Directory {
 	return directory
 }
 
+const HTTP_STATUS_NOT_IMPLEMENTED = 501
+const HTTP_STATUS_METHOD_NOT_ALLOWED = 405
+
 const DB = "db.json"
 
 func main() {
 	log.SetOutput(os.Stderr)
 	log.SetFlags(log.Llongfile)
 
-//	data, err := os.ReadFile(DB)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
+	err := godotenv.Load(".env")
+	if err != nil {
+		// dont kill since this isnt really the end of the world i think
+		log.Println("WARNING:", err)
+	}
 
-//	directory := Directory{}
+	apiUrl := os.Getenv("API_URL")
+	if apiUrl == "" {
+		log.Println("WARNING: API_URL is not set")
+	}
 
-//	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
-//	err = json.Unmarshal(data, unmarshaler)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-
-	// TODO: handle POST, PUT, PATCH, DELETE
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		directory := ReadMockDB(DB)
-		marshaler := conjson.NewMarshaler(directory, transform.ConventionalKeys())
-		b, err := json.Marshal(marshaler)
-		if err != nil {
-			log.Fatal(err)
-		}
+		switch strings.ToUpper(r.Method) {
+		case "": fallthrough
+		case "GET":
+			fmt.Fprintf(w, "{}")
 
-		fmt.Fprintf(w, string(b))
+		default:
+			http.Error(w, "Method Not Allowed", HTTP_STATUS_METHOD_NOT_ALLOWED)
+			return
+		}
 	})
 
 	// TODO: handle requests to paths with trailing `/`
 	// TODO: make paths case insensitive
-	http.HandleFunc("/locations", func(w http.ResponseWriter, r *http.Request) {
-		directory := ReadMockDB(DB)
-		marshaler := conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
-		b, err := json.Marshal(marshaler)
-		if err != nil {
-			log.Fatal(err)
-		}
 
-		fmt.Fprintf(w, string(b))
+	http.HandleFunc("/locations/", func(w http.ResponseWriter, r *http.Request) {
+		switch(strings.ToUpper(r.Method)) {
+		case "": fallthrough
+		case "GET":
+			directory := ReadMockDB(DB)
+			marshaler := conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
+			b, err := json.Marshal(marshaler)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Fprintf(w, "%s", string(b))
+
+		case "POST":
+			http.Error(w, "POST Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PUT":
+			http.Error(w, "PUT Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PATCH":
+			http.Error(w, "PATCH Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "DELETE":
+			http.Error(w, "DELETE Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		default:
+			http.Error(w, "Method Not Allowed", HTTP_STATUS_METHOD_NOT_ALLOWED)
+			return
+		}
 	})
 
-	http.HandleFunc("/locations/{location}", func(w http.ResponseWriter, r *http.Request) {
-		directory := ReadMockDB(DB)
+	http.HandleFunc("/locations/{location}/", func(w http.ResponseWriter, r *http.Request) {
+		switch(strings.ToUpper(r.Method)) {
+		case "": fallthrough
+		case "GET":
+			directory := ReadMockDB(DB)
 
-		locationName := r.PathValue("location")
-		locationIndex := -1
-		for i, v := range directory.Locations {
-			if strings.EqualFold(v.Name, locationName) {
-				locationIndex = i
-				break
+			locationName := r.PathValue("location")
+			locationIndex := -1
+			for i, v := range directory.Locations {
+				if strings.EqualFold(v.Name, locationName) {
+					locationIndex = i
+					break
+				}
 			}
-		}
 
-		if locationIndex == -1 {
-			http.Error(w, "not found", 404)
+			if locationIndex == -1 {
+				http.Error(w, "404 Not Found", 404)
+				return
+			}
+
+			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex], transform.ConventionalKeys())
+			b, err := json.Marshal(marshaler)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Fprintf(w, "%s", string(b))
+
+		case "POST":
+			http.Error(w, "POST Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PUT":
+			http.Error(w, "PUT Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PATCH":
+			http.Error(w, "PATCH Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "DELETE":
+			http.Error(w, "DELETE Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		default:
+			http.Error(w, "Method Not Allowed", HTTP_STATUS_METHOD_NOT_ALLOWED)
 			return
 		}
-
-		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex], transform.ConventionalKeys())
-		b, err := json.Marshal(marshaler)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Fprintf(w, string(b))
 	})
 
-	http.HandleFunc("/locations/{location}/menu", func(w http.ResponseWriter, r *http.Request) {
-		directory := ReadMockDB(DB)
-		locationName := r.PathValue("location")
-		locationIndex := -1
-		for i, v := range directory.Locations {
-			if strings.EqualFold(v.Name, locationName) {
-				locationIndex = i
-				break
+	http.HandleFunc("/locations/{location}/menu/", func(w http.ResponseWriter, r *http.Request) {
+		switch(strings.ToUpper(r.Method)) {
+		case "":
+		case "GET":
+			directory := ReadMockDB(DB)
+			locationName := r.PathValue("location")
+			locationIndex := -1
+			for i, v := range directory.Locations {
+				if strings.EqualFold(v.Name, locationName) {
+					locationIndex = i
+					break
+				}
 			}
-		}
 
-		if locationIndex == -1 {
-			http.Error(w, "not found", 404)
+			if locationIndex == -1 {
+				http.Error(w, "404 Not Found", 404)
+				return
+			}
+
+			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu, transform.ConventionalKeys())
+			b, err := json.Marshal(marshaler)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Fprintf(w, "%s", string(b))
+
+		case "POST":
+			http.Error(w, "POST Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PUT":
+			http.Error(w, "PUT Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PATCH":
+			http.Error(w, "PATCH Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "DELETE":
+			http.Error(w, "DELETE Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		default:
+			http.Error(w, "Method Not Allowed", HTTP_STATUS_METHOD_NOT_ALLOWED)
 			return
 		}
-
-		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu, transform.ConventionalKeys())
-		b, err := json.Marshal(marshaler)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Fprintf(w, string(b))
 	})
 
-	http.HandleFunc("/locations/{location}/menu/{subMenu}", func(w http.ResponseWriter, r *http.Request) {
-		directory := ReadMockDB(DB)
-		locationName := r.PathValue("location")
-		locationIndex := -1
-		for i, v := range directory.Locations {
-			if strings.EqualFold(v.Name, locationName) {
-				locationIndex = i
-				break
+	http.HandleFunc("/locations/{location}/menu/{subMenu}/", func(w http.ResponseWriter, r *http.Request) {
+		switch(strings.ToUpper(r.Method)) {
+		case "": fallthrough
+		case "GET":
+			directory := ReadMockDB(DB)
+			locationName := r.PathValue("location")
+			locationIndex := -1
+			for i, v := range directory.Locations {
+				if strings.EqualFold(v.Name, locationName) {
+					locationIndex = i
+					break
+				}
 			}
-		}
 
-		if locationIndex == -1 {
-			http.Error(w, "not found", 404)
+			if locationIndex == -1 {
+				http.Error(w, "404 Not Found", 404)
+				return
+			}
+
+			subMenuName := r.PathValue("subMenu")
+			subMenuIndex := -1
+			for i, v := range directory.Locations[locationIndex].Menu {
+				if strings.EqualFold(v.Name, subMenuName) {
+					subMenuIndex = i
+					break
+				}
+			}
+
+			if subMenuIndex == -1 {
+				http.Error(w, "404 Not Found", 404)
+				return
+			}
+
+			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[subMenuIndex], transform.ConventionalKeys())
+			b, err := json.Marshal(marshaler)
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			fmt.Fprintf(w, "%s", string(b))
+
+		case "POST":
+			http.Error(w, "POST Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PUT":
+			http.Error(w, "PUT Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "PATCH":
+			http.Error(w, "PATCH Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		case "DELETE":
+			http.Error(w, "DELETE Not Implemented", HTTP_STATUS_NOT_IMPLEMENTED)
+			return
+
+		default:
+			http.Error(w, "Method Not Allowed", HTTP_STATUS_METHOD_NOT_ALLOWED)
 			return
 		}
-
-		subMenuName := r.PathValue("subMenu")
-		subMenuIndex := -1
-		for i, v := range directory.Locations[locationIndex].Menu {
-			if strings.EqualFold(v.Name, subMenuName) {
-				subMenuIndex = i
-				break
-			}
-		}
-
-		if subMenuIndex == -1 {
-			http.Error(w, "not found", 404)
-			return
-		}
-
-		marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[subMenuIndex], transform.ConventionalKeys())
-		b, err := json.Marshal(marshaler)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		fmt.Fprintf(w, string(b))
 	})
 
 	log.Fatal(http.ListenAndServe(":8080", nil))

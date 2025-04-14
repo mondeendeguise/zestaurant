@@ -49,6 +49,13 @@
                             "in_stock": false
                         }
                     ]
+                },
+
+                {
+                    "name": "beverages",
+                    "items": [
+
+                    ]
                 }
             ]
 
