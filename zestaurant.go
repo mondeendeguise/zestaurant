@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/mondeendeguise/zestaurant/schema"
+
 	"encoding/json"
 	"fmt"
 	"log"
@@ -14,38 +16,14 @@ import (
 	"github.com/Rican7/conjson/transform"
 )
 
-type Directory struct {
-	Locations Locations
-}
-
-type Location struct {
-	Name string
-	Menu SubMenus
-}
-type Locations []Location
-
-type SubMenu struct {
-	Name string
-	Items MenuItems
-}
-type SubMenus []SubMenu
-
-type MenuItem struct {
-	Name string
-	Price float64
-	Description string
-	InStock bool
-}
-type MenuItems []MenuItem
-
 // TODO: simulate external API/DB
-func ReadMockDB(file string) Directory {
+func ReadMockDB(file string) schema.Directory {
 	data, err := os.ReadFile(file)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	directory := Directory{}
+	directory := schema.Directory{}
 	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
 	err = json.Unmarshal(data, unmarshaler)
 	if err != nil {
