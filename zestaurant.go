@@ -24,7 +24,7 @@ func ReadMockDB(file string) schema.Directory {
 	}
 
 	directory := schema.Directory{}
-	unmarshaler := conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
+	var unmarshaler json.Unmarshaler = conjson.NewUnmarshaler(&directory, transform.ConventionalKeys())
 	err = json.Unmarshal(data, unmarshaler)
 	if err != nil {
 		log.Fatal(err)
@@ -48,7 +48,7 @@ func main() {
 		log.Println("WARNING:", err)
 	}
 
-	apiUrl := os.Getenv("API_URL")
+	var apiUrl string = os.Getenv("API_URL")
 	if apiUrl == "" {
 		log.Println("WARNING: API_URL is not set")
 	}
@@ -72,8 +72,8 @@ func main() {
 		switch(strings.ToUpper(r.Method)) {
 		case "": fallthrough
 		case "GET":
-			directory := ReadMockDB(DB)
-			marshaler := conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
+			var directory schema.Directory = ReadMockDB(DB)
+			var marshaler json.Marshaler = conjson.NewMarshaler(directory.Locations, transform.ConventionalKeys())
 			b, err := json.Marshal(marshaler)
 			if err != nil {
 				log.Fatal(err)
@@ -107,10 +107,10 @@ func main() {
 		switch(strings.ToUpper(r.Method)) {
 		case "": fallthrough
 		case "GET":
-			directory := ReadMockDB(DB)
+			var directory schema.Directory = ReadMockDB(DB)
 
-			locationName := r.PathValue("location")
-			locationIndex := -1
+			var locationName string = r.PathValue("location")
+			var locationIndex int = -1
 			for i, v := range directory.Locations {
 				if strings.EqualFold(v.Name, locationName) {
 					locationIndex = i
@@ -123,7 +123,7 @@ func main() {
 				return
 			}
 
-			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex], transform.ConventionalKeys())
+			var marshaler json.Marshaler = conjson.NewMarshaler(directory.Locations[locationIndex], transform.ConventionalKeys())
 			b, err := json.Marshal(marshaler)
 			if err != nil {
 				log.Fatal(err)
@@ -157,9 +157,9 @@ func main() {
 		switch(strings.ToUpper(r.Method)) {
 		case "":
 		case "GET":
-			directory := ReadMockDB(DB)
-			locationName := r.PathValue("location")
-			locationIndex := -1
+			var directory schema.Directory = ReadMockDB(DB)
+			var locationName string = r.PathValue("location")
+			var locationIndex int = -1
 			for i, v := range directory.Locations {
 				if strings.EqualFold(v.Name, locationName) {
 					locationIndex = i
@@ -172,7 +172,7 @@ func main() {
 				return
 			}
 
-			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu, transform.ConventionalKeys())
+			var marshaler json.Marshaler = conjson.NewMarshaler(directory.Locations[locationIndex].Menu, transform.ConventionalKeys())
 			b, err := json.Marshal(marshaler)
 			if err != nil {
 				log.Fatal(err)
@@ -206,9 +206,9 @@ func main() {
 		switch(strings.ToUpper(r.Method)) {
 		case "": fallthrough
 		case "GET":
-			directory := ReadMockDB(DB)
-			locationName := r.PathValue("location")
-			locationIndex := -1
+			var directory schema.Directory = ReadMockDB(DB)
+			var locationName string = r.PathValue("location")
+			var locationIndex int = -1
 			for i, v := range directory.Locations {
 				if strings.EqualFold(v.Name, locationName) {
 					locationIndex = i
@@ -221,8 +221,8 @@ func main() {
 				return
 			}
 
-			menuGroupName := r.PathValue("menuGroup")
-			menuGroupIndex := -1
+			var menuGroupName string = r.PathValue("menuGroup")
+			var menuGroupIndex int = -1
 			for i, v := range directory.Locations[locationIndex].Menu {
 				if strings.EqualFold(v.Name, menuGroupName) {
 					menuGroupIndex = i
@@ -235,7 +235,7 @@ func main() {
 				return
 			}
 
-			marshaler := conjson.NewMarshaler(directory.Locations[locationIndex].Menu[menuGroupIndex], transform.ConventionalKeys())
+			var marshaler json.Marshaler = conjson.NewMarshaler(directory.Locations[locationIndex].Menu[menuGroupIndex], transform.ConventionalKeys())
 			b, err := json.Marshal(marshaler)
 			if err != nil {
 				log.Fatal(err)
