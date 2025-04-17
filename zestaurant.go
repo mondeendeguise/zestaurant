@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/joho/godotenv"
+//	"github.com/joho/godotenv"
 
 	"github.com/Rican7/conjson"
 	"github.com/Rican7/conjson/transform"
@@ -42,16 +42,16 @@ func main() {
 	log.SetOutput(os.Stderr)
 	log.SetFlags(log.Llongfile)
 
-	err := godotenv.Load(".env")
-	if err != nil {
-		// dont kill since this isnt really the end of the world i think
-		log.Println("WARNING:", err)
-	}
+//	err := godotenv.Load(".env")
+//	if err != nil {
+//		// dont kill since this isnt really the end of the world i think
+//		log.Println("WARNING:", err)
+//	}
 
-	var apiUrl string = os.Getenv("API_URL")
-	if apiUrl == "" {
-		log.Println("WARNING: API_URL is not set")
-	}
+//	var apiUrl string = os.Getenv("API_URL")
+//	if apiUrl == "" {
+//		log.Println("WARNING: API_URL is not set")
+//	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		switch strings.ToUpper(r.Method) {
