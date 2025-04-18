@@ -71,3 +71,49 @@ type Portion struct {
 	GUID string
 	ModifierGroupReferences ints
 }
+
+type PreModifiers []PreModifier
+type PreModifier struct {
+	Name string
+	GUID string
+	MultiLocationID string
+	FixedPrice float64
+	MultiplicationFactor float64
+	DisplayMode string
+	PosName string
+	PosButtonColorLight string
+	PosButtonColorDark string
+}
+
+type PreModifierGroup struct {
+	Name string
+	GUID string
+	MultiLocationID string
+	PreModifiers PreModifiers
+}
+
+type ModifierGroup struct {
+	Name string
+	GUID string
+	ReferenceID int
+	MultiLocationID string
+	MasterID int64 // DEPRECATED
+	PosName string
+	PosButtonColorLight string
+	PosButtonColorDark string
+	PricingStrategy string
+	PricingRules PricingRules
+	DefaultOptionsChargePrice string
+	DefaultOptionsSubstitutionPricing string
+	MinSelections int
+	MaxSelections int
+	RequiredMode string
+	IsMultiSelect bool
+	PreModifierGroupReference int
+	ModifierOptionReferences ints
+}
+
+type Metadata struct {
+	RestaurantGUID string
+	LastUpdated string
+}

@@ -66,6 +66,7 @@ type MenuGroup struct {
 	MenuItems MenuItems
 }
 
+type Menus []Menu
 type Menu struct {
 	Name string
 	GUID string
@@ -80,4 +81,14 @@ type Menu struct {
 	Visibility strings
 	Availability menus.Availability
 	MenuGroups MenuGroups
+}
+
+type Restaurant struct {
+	RestaurantGUID string
+	LastUpdated string
+	RestaurantTimeZone string
+	Menus Menus
+	ModifierGroupReferences map[string]menus.ModifierGroup
+	ModifierOptionReferences map[string]menus.ModifierGroup
+	PreModifierGroupReferences map[string]menus.PreModifierGroup
 }
