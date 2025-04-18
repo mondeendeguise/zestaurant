@@ -1,7 +1,7 @@
 package menus
 
 import (
-	"github.com/mondeendeguise/zestaurant/schema/toast/menus"
+	"github.com/mondeendeguise/zestaurant/toast/schema/menus"
 )
 
 type strings []string
@@ -13,13 +13,12 @@ type MenuItem struct {
 	KitchenName string
 	GUID string
 	MultiLocationID string
-	MasterID int64
+	MasterID int64 // DEPRECATED
 	Description string
 	PosName string
 	PosButtonColorLight string
 	PosButtonColorDark string
 	Image string
-	Visibility strings
 	Price float64
 	PricingStrategy string
 	PricingRules menus.PricingRules
@@ -54,13 +53,12 @@ type MenuGroup struct {
 	Name string
 	GUID string
 	MultiLocationID string
-	MasterID int64
+	MasterID int64 // DEPRECATED
 	Description string
 	PosName string
 	PosButtonColorLight string
 	PosButtonColorDark string
 	Image string
-	Visibility strings
 	ItemTags menus.ItemTags
 	MenuGroups MenuGroups
 	MenuItems MenuItems
@@ -70,14 +68,12 @@ type Menu struct {
 	Name string
 	GUID string
 	MultiLocationID string
-	MasterID int64
+	MasterID int64 // DEPRECATED
 	Description string
-	PosName string
 	PosButtonColorLight string
 	PosButtonColorDark string
 	HighResImage string
 	Image string
-	Visibility strings
 	Availability menus.Availability
 	MenuGroups MenuGroups
 }
