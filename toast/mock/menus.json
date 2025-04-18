@@ -1,0 +1,334 @@
+{
+    "restaurantGuid": "ea0a8ddc-1996-4cd1-bc9b-c9aaabff38dc",
+    "lastUpdated": "string",
+    "restaurantTimeZone": "string",
+    "menus": [
+        {
+            "name": "string",
+            "guid": "string",
+            "multiLocationId": "string",
+            "masterId": 0,
+            "description": "string",
+            "posButtonColorLight": "string",
+            "posButtonColorDark": "string",
+            "highResImage": "string",
+            "image": "string",
+            "availability": {},
+            "menuGroups": [
+                {
+                    "name": "string",
+                    "guid": "string",
+                    "multiLocationId": "string",
+                    "masterId": 0,
+                    "description": "string",
+                    "posName": "string",
+                    "posButtonColorLight": "string",
+                    "posButtonColorDark": "string",
+                    "image": "string",
+                    "itemTags": [
+                        {
+                            "name": "string",
+                            "guid": "string"
+                        }
+                    ],
+                    "menuGroups": [
+                        {}
+                    ],
+                    "menuItems": [
+                        {
+                            "name": "string",
+                            "kitchenName": "string",
+                            "guid": "string",
+                            "multiLocationId": "string",
+                            "masterId": 0,
+                            "description": "string",
+                            "posName": "string",
+                            "posButtonColorLight": "string",
+                            "posButtonColorDark": "string",
+                            "image": "string",
+                            "price": 0,
+                            "pricingStrategy": "BASE_PRICE",
+                            "pricingRules": {},
+                            "isDeferred": true,
+                            "isDiscountable": true,
+                            "salesCategory": {
+                                "name": "string",
+                                "guid": "string"
+                            },
+                            "taxInfo": [
+                                null
+                            ],
+                            "taxInclusion": "TAX_INCLUDED",
+                            "itemTags": [
+                                null
+                            ],
+                            "plu": "string",
+                            "sku": "string",
+                            "calories": 0,
+                            "contentAdvisories": {
+                                "alcohol": null
+                            },
+                            "unitOfMeasure": "NONE",
+                            "portions": [
+                                null
+                            ],
+                            "prepTime": 0,
+                            "prepStations": [
+                                null
+                            ],
+                            "modifierGroupReferences": [
+                                null
+                            ],
+                            "eligiblePaymentAssistancePrograms": [
+                                null
+                            ],
+                            "length": 0,
+                            "height": 0,
+                            "width": 0,
+                            "dimensionUnitOfMeasure": "IN",
+                            "weight": 0,
+                            "weightUnitOfMeasure": "NONE",
+                            "images": [
+                                null
+                            ],
+                            "guestCount": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "modifierGroupReferences": {
+        "identifier": 0,
+        "property1": {
+            "name": "string",
+            "guid": "string",
+            "referenceId": 0,
+            "multiLocationId": "string",
+            "masterId": 0,
+            "posName": "string",
+            "posButtonColorLight": "string",
+            "posButtonColorDark": "string",
+            "pricingStrategy": "string",
+            "pricingRules": {},
+            "defaultOptionsChargePrice": "NO",
+            "defaultOptionsSubstitutionPricing": "NO",
+            "minSelections": 0,
+            "maxSelections": 0,
+            "requiredMode": "REQUIRED",
+            "isMultiSelect": true,
+            "preModifierGroupReference": 0,
+            "modifierOptionReferences": [
+                0
+            ]
+        },
+        "property2": {
+            "name": "string",
+            "guid": "string",
+            "referenceId": 0,
+            "multiLocationId": "string",
+            "masterId": 0,
+            "posName": "string",
+            "posButtonColorLight": "string",
+            "posButtonColorDark": "string",
+            "pricingStrategy": "string",
+            "pricingRules": {},
+            "defaultOptionsChargePrice": "NO",
+            "defaultOptionsSubstitutionPricing": "NO",
+            "minSelections": 0,
+            "maxSelections": 0,
+            "requiredMode": "REQUIRED",
+            "isMultiSelect": true,
+            "preModifierGroupReference": 0,
+            "modifierOptionReferences": [
+                0
+            ]
+        }
+    },
+    "modifierOptionReferences": {
+        "identifier": 0,
+        "property1": {
+            "referenceId": 0,
+            "name": "string",
+            "kitchenName": "string",
+            "guid": "string",
+            "multiLocationId": "string",
+            "masterId": 0,
+            "description": "string",
+            "posName": "string",
+            "posButtonColorLight": "string",
+            "posButtonColorDark": "string",
+            "prepStations": [
+                "string"
+            ],
+            "image": "string",
+            "price": 0,
+            "pricingStrategy": "string",
+            "pricingRules": {},
+            "salesCategory": {
+                "name": "string",
+                "guid": "string"
+            },
+            "taxInfo": [
+                "string"
+            ],
+            "modifierOptionTaxInfo": {
+                "taxRateGuids": [
+                    "string"
+                ],
+                "overrideItemTaxRates": true
+            },
+            "itemTags": [
+                {
+                    "name": "string",
+                    "guid": "string"
+                }
+            ],
+            "plu": "string",
+            "sku": "string",
+            "calories": 0,
+            "contentAdvisories": {
+                "alcohol": {
+                    "containsAlcohol": "YES"
+                }
+            },
+            "unitOfMeasure": "NONE",
+            "isDefault": true,
+            "allowsDuplicates": true,
+            "portions": [
+                {
+                    "name": "string",
+                    "guid": "string",
+                    "modifierGroupReferences": [
+                        0
+                    ]
+                }
+            ],
+            "prepTime": 0,
+            "modifierGroupReferences": [
+                0
+            ],
+            "length": 0,
+            "height": 0,
+            "width": 0,
+            "dimensionUnitOfMeasure": "IN",
+            "weight": 0,
+            "weightUnitOfMeasure": "NONE",
+            "images": [
+                "string"
+            ],
+            "guestCount": 0
+        },
+        "property2": {
+            "referenceId": 0,
+            "name": "string",
+            "kitchenName": "string",
+            "guid": "string",
+            "multiLocationId": "string",
+            "masterId": 0,
+            "description": "string",
+            "posName": "string",
+            "posButtonColorLight": "string",
+            "posButtonColorDark": "string",
+            "prepStations": [
+                "string"
+            ],
+            "image": "string",
+            "price": 0,
+            "pricingStrategy": "string",
+            "pricingRules": {},
+            "salesCategory": {
+                "name": "string",
+                "guid": "string"
+            },
+            "taxInfo": [
+                "string"
+            ],
+            "modifierOptionTaxInfo": {
+                "taxRateGuids": [
+                    "string"
+                ],
+                "overrideItemTaxRates": true
+            },
+            "itemTags": [
+                {
+                    "name": "string",
+                    "guid": "string"
+                }
+            ],
+            "plu": "string",
+            "sku": "string",
+            "calories": 0,
+            "contentAdvisories": {
+                "alcohol": {
+                    "containsAlcohol": "YES"
+                }
+            },
+            "unitOfMeasure": "NONE",
+            "isDefault": true,
+            "allowsDuplicates": true,
+            "portions": [
+                {
+                    "name": "string",
+                    "guid": "string",
+                    "modifierGroupReferences": [
+                        0
+                    ]
+                }
+            ],
+            "prepTime": 0,
+            "modifierGroupReferences": [
+                0
+            ],
+            "length": 0,
+            "height": 0,
+            "width": 0,
+            "dimensionUnitOfMeasure": "IN",
+            "weight": 0,
+            "weightUnitOfMeasure": "NONE",
+            "images": [
+                "string"
+            ],
+            "guestCount": 0
+        }
+    },
+    "preModifierGroupReferences": {
+        "identifier": 0,
+        "property1": {
+            "name": "string",
+            "guid": "string",
+            "multiLocationId": "string",
+            "preModifiers": [
+                {
+                    "name": "string",
+                    "guid": "string",
+                    "multiLocationId": "string",
+                    "fixedPrice": 0,
+                    "multiplicationFactor": 0,
+                    "displayMode": "PREFIX",
+                    "posName": "string",
+                    "posButtonColorLight": "string",
+                    "posButtonColorDark": "string"
+                }
+            ]
+        },
+        "property2": {
+            "name": "string",
+            "guid": "string",
+            "multiLocationId": "string",
+            "preModifiers": [
+                {
+                    "name": "string",
+                    "guid": "string",
+                    "multiLocationId": "string",
+                    "fixedPrice": 0,
+                    "multiplicationFactor": 0,
+                    "displayMode": "PREFIX",
+                    "posName": "string",
+                    "posButtonColorLight": "string",
+                    "posButtonColorDark": "string"
+                }
+            ]
+        }
+    }
+}
