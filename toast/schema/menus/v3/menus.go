@@ -84,7 +84,7 @@ type Restaurant struct {
 	LastUpdated string
 	RestaurantTimeZone string
 	Menus Menus
-	ModifierGroupReferences map[string]menus.ModifierGroup
-	ModifierOptionReferences map[string]menus.ModifierGroup
-	PreModifierGroupReferences map[string]menus.PreModifierGroup
+	ModifierGroupReferences map[string]interface{}
+	ModifierOptionReferences map[string]interface{}
+	PreModifierGroupReferences map[string]interface{}
 }
