@@ -10,12 +10,20 @@ import (
 //go:embed json
 var jsonFS embed.FS
 
-const METADATA_FILE string = "json/metadata.json"
-const MENUS_FILE string = "json/menus.json"
+type ResponseType int
 
-func MockResponse(filename string, status string, statusCode int) (response *http.Response, err error) {
-	jsonFile, err := jsonFS.ReadFile(filename)
+const (
+	Metadata ResponseType = iota
+	Menus
+)
 
+var responseFiles = map[ResponseType]string{
+	Metadata: "json/metadata.json",
+	Menus: "json/menus.json",
+}
+
+func MockResponse(responseType ResponseType, status string, statusCode int) (response *http.Response, err error) {
+	jsonFile, err := jsonFS.ReadFile(responseFiles[responseType])
 	var buf *bytes.Buffer = bytes.NewBuffer(jsonFile)
 
 	response = &http.Response {

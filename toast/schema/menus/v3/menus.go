@@ -190,7 +190,7 @@ type Menu struct {
 	MenuGroups MenuGroups
 }
 
-type Restaurant struct {
+type MenusInfo struct {
 	RestaurantGUID string
 	LastUpdated string
 	RestaurantTimeZone string
